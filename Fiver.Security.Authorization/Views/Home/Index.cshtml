@@ -1,0 +1,23 @@
+﻿<h2>Movies Listing</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Rating</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Thunderball</td>
+            <td>PG</td>
+            <td><a asp-controller="Rentals" asp-action="Rent">Rent</a></td>
+        </tr>
+        <tr>
+            <td>American Pie</td>
+            <td>18</td>
+            <td><a asp-controller="Rentals" asp-action="RentOver18">Rent</a></td>
+        </tr>
+    </tbody>
+</table>
