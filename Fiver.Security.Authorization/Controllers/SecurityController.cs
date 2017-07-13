@@ -70,7 +70,8 @@ namespace Fiver.Security.Authorization.Controllers
                     new Claim(ClaimTypes.Name, "Paid Member"),
                     new Claim("MembershipId", "222"),
                     new Claim("HasCreditCard", "Y"),
-                    new Claim(ClaimTypes.DateOfBirth, "01/01/2000")
+                    new Claim(ClaimTypes.DateOfBirth, "01/01/2000"),
+                    new Claim("AllowNewReleases", "true")
                 };
             }
 
@@ -81,7 +82,8 @@ namespace Fiver.Security.Authorization.Controllers
                     new Claim(ClaimTypes.Name, "Over 18"),
                     new Claim("MembershipId", "333"),
                     new Claim("HasCreditCard", "Y"),
-                    new Claim(ClaimTypes.DateOfBirth, "01/01/1980")
+                    new Claim(ClaimTypes.DateOfBirth, "01/01/1980"),
+                    new Claim("AllowNewReleases", "false")
                 };
             }
 

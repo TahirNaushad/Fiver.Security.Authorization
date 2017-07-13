@@ -20,16 +20,20 @@ namespace Fiver.Security.Authorization
                     policy => policy.RequireAuthenticatedUser());
 
                 options.AddPolicy("Member",
-                    policty => policty.RequireClaim("MembershipId"));
+                    policy => policy.RequireClaim("MembershipId"));
 
                 options.AddPolicy("PaidMember",
-                    policty => policty.RequireClaim("HasCreditCard", "Y"));
+                    policy => policy.RequireClaim("HasCreditCard", "Y"));
 
                 options.AddPolicy("Over18",
                     policy => policy.Requirements.Add(new AgeRequirement(18)));
+
+                options.AddPolicy("CanRentNewRelease",
+                    policy => policy.Requirements.Add(new RentNewReleaseRequirement()));
             });
 
             services.AddScoped<IAuthorizationHandler, AgeRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, RentNewReleaseRequirementHandler>();
 
             services.AddMvc(options =>
             {

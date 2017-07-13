@@ -1,4 +1,6 @@
-﻿<h2>Movies Listing</h2>
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authService
+
+<h2>Movies Listing</h2>
 
 <table>
     <thead>
@@ -13,11 +15,52 @@
             <td>Thunderball</td>
             <td>PG</td>
             <td><a asp-controller="Rentals" asp-action="Rent">Rent</a></td>
+            @*<td>
+                @if (await authService.AuthorizeAsync(User, null, "PaidMember"))
+                {
+                    <a asp-controller="Rentals" asp-action="Rent">Rent</a>
+                }
+                else
+                {
+                    <span>Rent (unavailable)</span>
+                }
+            </td>*@
         </tr>
         <tr>
             <td>American Pie</td>
             <td>18</td>
             <td><a asp-controller="Rentals" asp-action="RentOver18">Rent</a></td>
+            @*<td>
+                @if (await authService.AuthorizeAsync(User, null, "Over18"))
+                {
+                    <a asp-controller="Rentals" asp-action="RentOver18">Rent</a>
+                }
+                else
+                {
+                    <span>Rent (unavailable)</span>
+                }
+            </td>*@
+        </tr>
+        <tr>
+            <td>Despicable Me 3</td>
+            <td>U</td>
+            <td><a asp-controller="Rentals" 
+                   asp-action="RentNewRelease"
+                   asp-route-Title="Despicable Me 3"
+                   asp-route-IsNewRelease="true">Rent (new)</a></td>
+            @*<td>
+                @if (await authService.AuthorizeAsync(User, null, "CanRentNewRelease"))
+                {
+                    <a asp-controller="Rentals"
+                       asp-action="RentNewRelease"
+                       asp-route-Title="Despicable Me 3"
+                       asp-route-IsNewRelease="true">Rent (new)</a>
+                }
+                else
+                {
+                    <span>Rent (new) (unavailable)</span>
+                }
+            </td>*@
         </tr>
     </tbody>
 </table>
