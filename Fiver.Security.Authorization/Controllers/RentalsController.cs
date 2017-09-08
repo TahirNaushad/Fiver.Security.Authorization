@@ -29,7 +29,8 @@ namespace Fiver.Security.Authorization.Controllers
         public async Task<IActionResult> RentNewRelease(
             Rental inputModel)
         {
-            if (!await authService.AuthorizeAsync(User, inputModel, "CanRentNewRelease"))
+            var result = await authService.AuthorizeAsync(User, inputModel, "CanRentNewRelease");
+            if (!result.Succeeded)
                 return Challenge();
 
             return View();

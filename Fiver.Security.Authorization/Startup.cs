@@ -1,11 +1,11 @@
 ﻿using Fiver.Security.Authorization.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Fiver.Security.Authorization
 {
@@ -14,6 +14,13 @@ namespace Fiver.Security.Authorization
         public void ConfigureServices(
             IServiceCollection services)
         {
+            services.AddAuthentication("FiverSecurityScheme") //CookieAuthenticationDefaults.AuthenticationScheme
+                    .AddCookie("FiverSecurityScheme", options =>
+                    {
+                        options.AccessDeniedPath = new PathString("/Security/Access");
+                        options.LoginPath = new PathString("/Security/Login");
+                    });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Authenticated", 
@@ -43,20 +50,10 @@ namespace Fiver.Security.Authorization
 
         public void Configure(
             IApplicationBuilder app,
-            IHostingEnvironment env,
-            ILoggerFactory loggerFactory)
+            IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AccessDeniedPath = new PathString("/Security/Access"),
-                AuthenticationScheme = "FiverSecurityCookie",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                LoginPath = new PathString("/Security/Login")
-            });
-
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
     }

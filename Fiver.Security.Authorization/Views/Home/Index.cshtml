@@ -1,4 +1,5 @@
-﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authService
+﻿@using Fiver.Security.Authorization.Models.Rentals
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authService
 
 <h2>Movies Listing</h2>
 
@@ -14,9 +15,9 @@
         <tr>
             <td>Thunderball</td>
             <td>PG</td>
-            <td><a asp-controller="Rentals" asp-action="Rent">Rent</a></td>
-            @*<td>
-                @if (await authService.AuthorizeAsync(User, null, "PaidMember"))
+            @*<td><a asp-controller="Rentals" asp-action="Rent">Rent</a></td>*@
+            <td>
+                @if ((await authService.AuthorizeAsync(User, null, "PaidMember")).Succeeded)
                 {
                     <a asp-controller="Rentals" asp-action="Rent">Rent</a>
                 }
@@ -24,14 +25,14 @@
                 {
                     <span>Rent (unavailable)</span>
                 }
-            </td>*@
+            </td>
         </tr>
         <tr>
             <td>American Pie</td>
             <td>18</td>
-            <td><a asp-controller="Rentals" asp-action="RentOver18">Rent</a></td>
-            @*<td>
-                @if (await authService.AuthorizeAsync(User, null, "Over18"))
+            @*<td><a asp-controller="Rentals" asp-action="RentOver18">Rent</a></td>*@
+            <td>
+                @if ((await authService.AuthorizeAsync(User, null, "Over18")).Succeeded)
                 {
                     <a asp-controller="Rentals" asp-action="RentOver18">Rent</a>
                 }
@@ -39,17 +40,19 @@
                 {
                     <span>Rent (unavailable)</span>
                 }
-            </td>*@
+            </td>
         </tr>
         <tr>
             <td>Despicable Me 3</td>
             <td>U</td>
-            <td><a asp-controller="Rentals" 
+            @*<td><a asp-controller="Rentals" 
                    asp-action="RentNewRelease"
                    asp-route-Title="Despicable Me 3"
-                   asp-route-IsNewRelease="true">Rent (new)</a></td>
-            @*<td>
-                @if (await authService.AuthorizeAsync(User, null, "CanRentNewRelease"))
+                   asp-route-IsNewRelease="true">Rent (new)</a></td>*@
+            <td>
+                @if ((await authService.AuthorizeAsync(User, 
+                        new Rental { Title = "Despicable Me 3", IsNewRelease = true }, 
+                        "CanRentNewRelease")).Succeeded)
                 {
                     <a asp-controller="Rentals"
                        asp-action="RentNewRelease"
@@ -60,7 +63,7 @@
                 {
                     <span>Rent (new) (unavailable)</span>
                 }
-            </td>*@
+            </td>
         </tr>
     </tbody>
 </table>

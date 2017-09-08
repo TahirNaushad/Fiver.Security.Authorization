@@ -1,4 +1,5 @@
 ﻿using Fiver.Security.Authorization.Models.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -21,12 +22,18 @@ namespace Fiver.Security.Authorization.Controllers
             if (!IsAuthentic(inputModel.Username, inputModel.Password))
                 return View();
 
+            // create claims
             var claims = GetClaims(inputModel.Username);
+
+            // create identity
             var identity = new ClaimsIdentity(claims, "cookie");
+
+            // create principal
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.Authentication.SignInAsync(
-                    authenticationScheme: "FiverSecurityCookie",
+            // sign-in
+            await HttpContext.SignInAsync(
+                    scheme: "FiverSecurityScheme",
                     principal: principal);
 
             return RedirectToAction("Index", "Home");
@@ -34,8 +41,8 @@ namespace Fiver.Security.Authorization.Controllers
 
         public async Task<IActionResult> Logout(string requestPath)
         {
-            await HttpContext.Authentication.SignOutAsync(
-                    authenticationScheme: "FiverSecurityCookie");
+            await HttpContext.SignOutAsync(
+                    scheme: "FiverSecurityScheme");
 
             return RedirectToAction("Login");
         }
