@@ -31,7 +31,7 @@ namespace Fiver.Security.Authorization.Controllers
         {
             var result = await authService.AuthorizeAsync(User, inputModel, "CanRentNewRelease");
             if (!result.Succeeded)
-                return Challenge();
+                return Forbid(); //return Challenge();
 
             return View();
         }
